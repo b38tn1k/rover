@@ -1,17 +1,13 @@
 // James Carthew Feb 2016
 // A Simple API for some sensor data in my rover
-
 #ifndef Sensors_h
 #define Sensors_h
-
 // IMU Libraries
 #include <Wire.h>
 #include <I2Cdev.h>
 #include <MPU6050.h>
 // IR Range Finders
 #include <SharpIR.h>
-
-#define NB_SAMPLE 25
 
 class Sensors {
   public:
