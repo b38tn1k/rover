@@ -20,18 +20,17 @@ Software for a Hercules Platform utilising various cheap sensors:
 #include <motordriver_4wd.h>
 #include <seeed_pwm.h>
 // Sensor Data Handler Class
-#include <Sensors.h>
+#include "Sensors.h"
 
-
-Sensors sensor = Sensors();
-SharpIR frontIR = SharpIR(A3, 1080);
-SharpIR rearIR = SharpIR(A2, 1080);
+int frontIrPin = A3;
+int rearIrPin = A2;
+int irModel = 1080;
+Sensors sensor = Sensors(irModel, frontIrPin, rearIrPin);
 
 void setup()
 {
   Serial.begin(9600);
   MOTOR.init();
-
 }
 
 void loop()
@@ -41,7 +40,7 @@ void loop()
 }
 
 void readSensors() {
-  sensor.IR.front = frontIR.distance();
-  sensor.IR.rear = rearIR.distance();
-  Serial.println(sensor.IR.front);
+  // sensor.IR.front = frontIR.distance();
+  // sensor.IR.rear = rearIR.distance();
+  // Serial.println(sensor.IR.front);
 }
