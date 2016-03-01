@@ -9,7 +9,7 @@
 
 Sensors::Sensors(int model, int front, int rear) : irSensorModel(model),  frontIrPin(front), rearIrPin(rear)
 {
-  
+
 }
 
 void Sensors::readSensors()
@@ -38,5 +38,6 @@ void Sensors::readGyro()
 
 void Sensors::readIR()
 {
+
 
 }

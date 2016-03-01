@@ -43,9 +43,10 @@ public:
         } compass;
 private:
         // http://stackoverflow.com/questions/22117310/c-global-variable-initialization-order
-        int frontIrPin, rearIrPin, irSensorModel;
         SharpIR frontIR = SharpIR(frontIrPin, irSensorModel);
         SharpIR rearIR = SharpIR(rearIrPin, irSensorModel);
+        int frontIrPin, rearIrPin, irSensorModel;
+        // I may have to revisit this
         void readCompass();
         void readAccel();
         void readGyro();
