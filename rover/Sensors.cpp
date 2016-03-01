@@ -7,9 +7,8 @@
 // IR Range Finders
 #include <SharpIR.h>
 
-Sensors::Sensors(int model, int front, int rear) : irSensorModel(model),  frontIrPin(front), rearIrPin(rear)
+Sensors::Sensors()
 {
-
 }
 
 void Sensors::readSensors()
@@ -38,6 +37,6 @@ void Sensors::readGyro()
 
 void Sensors::readIR()
 {
-
-
+  IR.front = frontIR.distance();
+  IR.rear = rearIR.distance();
 }

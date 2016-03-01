@@ -12,7 +12,7 @@
 class Sensors
 {
 public:
-        Sensors(int irSensorModel, int frontIrPin, int rearIrPin);
+        Sensors();
         void readSensors();
         // IR Data
         struct IR_t
@@ -42,11 +42,15 @@ public:
                 volatile int z;
         } compass;
 private:
-        // http://stackoverflow.com/questions/22117310/c-global-variable-initialization-order
-        SharpIR frontIR = SharpIR(frontIrPin, irSensorModel);
-        SharpIR rearIR = SharpIR(rearIrPin, irSensorModel);
-        int frontIrPin, rearIrPin, irSensorModel;
-        // I may have to revisit this
+        // IR Setup
+        int frontIrPin = A3;
+        int rearIrPin = A2;
+        int irModel = 1080;
+        SharpIR frontIR = SharpIR(frontIrPin, irModel);
+        SharpIR rearIR = SharpIR(rearIrPin, irModel);
+        // IMU Setup
+
+        // Data Aquisition Functions
         void readCompass();
         void readAccel();
         void readGyro();
