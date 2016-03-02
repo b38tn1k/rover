@@ -6,7 +6,7 @@
 #include <I2Cdev.h>
 #include <MPU6050.h>
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-    #include "Wire.h"
+#include "Wire.h"
 #endif
 // IR Range Finders
 #include <SharpIR.h>
@@ -46,6 +46,8 @@ class Sensors
       float z;
     } compass;
   private:
+    // MPU Sensor Bias
+    float abx, aby, abz, gbx, gby, gbz;
     // IR Setup
     int frontIrPin = A3;
     int rearIrPin = A2;
@@ -61,6 +63,7 @@ class Sensors
     // Data Aquisition Functions
     void readMPU();
     void readIR();
+    void determineMPUBias();
 };
 
 #endif

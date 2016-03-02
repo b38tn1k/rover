@@ -6,14 +6,14 @@
 
 class Model
 {
-public:
-  Model();
-  void updateModel(Sensors sensors);
-  signed long heading;
-  signed long velocity;
-  signed long pitch;
-  signed long roll;
-  signed long yaw;
+  public:
+    Model();
+    void updateModel(Sensors sensors);
+    signed long heading;
+    signed long velocity;
+    signed long pitch;
+    signed long roll;
+    signed long yaw;
 };
 
 #endif

@@ -10,5 +10,4 @@ Model::Model()
 void Model::updateModel(Sensors sensors)
 {
   sensors.prettyPrintData();
-
 }

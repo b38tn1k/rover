@@ -26,9 +26,12 @@ Sensors sensors = Sensors();
 Model model = Model();
 unsigned long  loopStart = 0;
 unsigned long loopDelta = 10;
+long loopCounter = 0;
 void setup()
 {
   Serial.begin(38400);
+  delay(100);
+  Serial.println("\nHello, World!");
   MOTOR.init();
   sensors.init();
 }
@@ -41,12 +44,9 @@ void loop()
   sensors.readSensors(); // about 9ms
   // sensors.prettyPrintData();
   model.updateModel(sensors);
+  delay(2000);
 
-  delay(100);
-  //  MOTOR.setSpeedDir(100, DIRF);
   // LOOP-COUNTER: NOTHING BELOW HERE
   loopDelta = millis() - loopStart;
-  Serial.println("DELTA:");
-  Serial.println(loopDelta);
-  Serial.println("");
+  loopCounter++;
 }
