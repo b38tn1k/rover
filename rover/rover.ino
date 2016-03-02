@@ -23,19 +23,18 @@ Software for a Hercules Platform utilising various cheap sensors:
 #include "Sensors.h"
 
 Sensors sensors = Sensors();
-// SharpIR frontIR = SharpIR(frontIrPin, irModel);
-// SharpIR rearIR = SharpIR(rearIrPin, irModel);
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(38400);
   MOTOR.init();
+  sensors.init();
 }
 
 void loop()
 {
   sensors.readSensors();
-  Serial.println(sensors.IR.rear);
-  Serial.println(sensors.IR.front);
-  delay(100);
-//  MOTOR.setSpeedDir(100, DIRF);
+  sensors.prettyPrintData();
+  delay(2000);
+  Serial.println("");
+  //  MOTOR.setSpeedDir(100, DIRF);
 }
