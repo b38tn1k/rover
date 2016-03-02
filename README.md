@@ -1,5 +1,8 @@
 # rover
-a green robot with a camera
+a little green robot with:
+- Pixy
+- IMU
+- IR Range Finder
 
 
 
