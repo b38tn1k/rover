@@ -21,29 +21,29 @@ class Sensors
     // IR Data
     struct IR_t
     {
-      int front;
-      int rear;
+      float front;
+      float rear;
     } IR;
     // Acceleronmeter Data
     struct accel_t
     {
-      double x;
-      double y;
-      double z;
+      float x;
+      float y;
+      float z;
     } accel;
     // Gyro Data
     struct gyro_t
     {
-      double x;
-      double y;
-      double z;
+      float x;
+      float y;
+      float z;
     } gyro;
     // Compass Data
     struct compass_t
     {
-      double x;
-      double y;
-      double z;
+      float x;
+      float y;
+      float z;
     } compass;
   private:
     // IR Setup

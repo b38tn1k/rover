@@ -19,10 +19,13 @@ Software for a Hercules Platform utilising various cheap sensors:
 // Hercules Motor Controller
 #include <motordriver_4wd.h>
 #include <seeed_pwm.h>
-// Sensor Data Handler Class
+// My Stuff
 #include "Sensors.h"
-
+#include "Model.h"
 Sensors sensors = Sensors();
+Model model = Model();
+unsigned long  loopStart = 0;
+unsigned long loopDelta = 10;
 void setup()
 {
   Serial.begin(38400);
@@ -32,9 +35,18 @@ void setup()
 
 void loop()
 {
-  sensors.readSensors();
-  sensors.prettyPrintData();
-  delay(2000);
-  Serial.println("");
+  loopStart = millis();
+  // LOOP-COUNTER: NOTHING ABOVE HERE
+
+  sensors.readSensors(); // about 9ms
+  // sensors.prettyPrintData();
+  model.updateModel(sensors);
+
+  delay(100);
   //  MOTOR.setSpeedDir(100, DIRF);
+  // LOOP-COUNTER: NOTHING BELOW HERE
+  loopDelta = millis() - loopStart;
+  Serial.println("DELTA:");
+  Serial.println(loopDelta);
+  Serial.println("");
 }
