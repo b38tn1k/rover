@@ -48,6 +48,7 @@ class Sensors
   private:
     // MPU Sensor Bias
     float abx, aby, abz, gbx, gby, gbz;
+    boolean initflag = true;
     // IR Setup
     int frontIrPin = A3;
     int rearIrPin = A2;

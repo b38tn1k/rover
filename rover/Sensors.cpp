@@ -21,13 +21,26 @@ void Sensors::readSensors()
 
 void Sensors::readMPU()
 {
+  // 16384 is 1g for MPU6050 with range +/- 2g represented over [-32768, +32767]
   mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-  accel.x = ax - abx;
-  accel.y = ay - aby;
-  accel.z = az - abz;
-  gyro.x = gx - gbx;
-  gyro.y = gy - gby;
-  gyro.z = gz - gbz;
+
+  if (initflag == false) {
+    accel.x = (ax - abx);
+    accel.y = (ay - aby);
+    accel.z = (az - abz);
+    // +/- 250 deg/sec represented over [-32768, +32767]
+    gyro.x = (gx - gbx);
+    gyro.y = (gy - gby);
+    gyro.z = (gz - gbz);
+  } else {
+    accel.x = ax;
+    accel.y = ay;
+    accel.z = az;
+    // +/- 250 deg/sec represented over [-32768, +32767]
+    gyro.x = gx;
+    gyro.y = gy;
+    gyro.z = gz;
+  }
 }
 
 void Sensors::readIR()
@@ -59,24 +72,18 @@ void Sensors::prettyPrintData()
 void Sensors::determineMPUBias()
 {
   int counter = 0;
-  int sampleCount = 1;
+  int sampleCount = 500.0;
   float ax, ay, az, gx, gy, gz = 0.0;
   while (counter < sampleCount) {
     readSensors();
-    ax = ax + accel.x;
-    ay = ay + accel.y;
-    az = az + accel.z + 16384; //16384 is 1g for MPU6050 with range +/- 2g represented over [-32768, +32767]
-    gx = gx + gyro.x; // +/- 250 deg/sec represented over [-32768, +32767]
-    gy = gx + gyro.y;
-    gz = gx + gyro.z;
+    abx = abx + (accel.x / sampleCount);
+    aby = aby + (accel.y / sampleCount);
+    abz = abz + ((accel.z + 16384) / sampleCount); //16384 is 1g for MPU6050 with range +/- 2g represented over [-32768, +32767]
+    gbx = gbx + (gyro.x / sampleCount);
+    gby = gby + (gyro.y / sampleCount);
+    gbz = gbz + (gyro.z / sampleCount);
     counter++;
   }
-  abx = ax / sampleCount;
-  aby = ay / sampleCount;
-  abz = az / sampleCount;
-  gbx = gx / sampleCount;
-  gby = gy / sampleCount;
-  gbz = gz / sampleCount;
 
   Serial.println("Accel Bias:");
   Serial.println(abx);
@@ -86,6 +93,7 @@ void Sensors::determineMPUBias()
   Serial.println(gbx);
   Serial.println(gby);
   Serial.println(gbz);
+  Serial.println();
 
 }
 
@@ -98,5 +106,6 @@ void Sensors::init()
 #endif
   mpu.initialize();
   determineMPUBias();
-
+  
+  initflag = false;
 }
