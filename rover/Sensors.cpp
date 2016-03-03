@@ -22,21 +22,20 @@ void Sensors::readSensors()
 void Sensors::readMPU()
 {
   // 16384 is 1g for MPU6050 with range +/- 2g represented over [-32768, +32767]
+  // 131 is 1 deg/sec with range +/- 250 deg/sec represented over [-32768, +32767]
   mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
   if (initflag == false) {
-    accel.x = (ax - abx);
-    accel.y = (ay - aby);
-    accel.z = (az - abz);
-    // +/- 250 deg/sec represented over [-32768, +32767]
-    gyro.x = (gx - gbx);
-    gyro.y = (gy - gby);
-    gyro.z = (gz - gbz);
+    accel.x = (ax - abx)/16384.0;
+    accel.y = (ay - aby)/16384.0;
+    accel.z = (az - abz)/16384.0;
+    gyro.x = (gx - gbx)/130.0;
+    gyro.y = (gy - gby)/130.0;
+    gyro.z = (gz - gbz)/130.0;
   } else {
     accel.x = ax;
     accel.y = ay;
     accel.z = az;
-    // +/- 250 deg/sec represented over [-32768, +32767]
     gyro.x = gx;
     gyro.y = gy;
     gyro.z = gz;
@@ -53,8 +52,6 @@ void Sensors::prettyPrintData()
 {
   Serial.println("IR_FRONT:");
   Serial.println(IR.front);
-  Serial.println();
-  Serial.println("IR_REAR:");
   Serial.println(IR.rear);
   Serial.println();
   Serial.println("ACCELXYZ:");
