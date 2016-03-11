@@ -38,16 +38,13 @@ void setup()
 
 void loop()
 {
-  loopStart = millis();
-  // LOOP-COUNTER: NOTHING ABOVE HERE
-
   sensors.readSensors(); // about 9ms
   // sensors.prettyPrintData();
   model.updateModel(sensors, loopDelta);
   model.prettyPrintData();
 
-  // delay(2000);
   // LOOP-COUNTER: NOTHING BELOW HERE
   loopDelta = millis() - loopStart;
+  loopStart = millis();
   loopCounter++;
 }

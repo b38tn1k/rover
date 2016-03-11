@@ -5,9 +5,7 @@
 // IMU Libraries
 #include <I2Cdev.h>
 #include <MPU6050.h>
-#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
-#endif
 // IR Range Finders
 #include <SharpIR.h>
 
@@ -21,33 +19,21 @@ class Sensors
     // IR Data
     struct IR_t
     {
-      float front;
-      float rear;
+      double front;
+      double rear;
     } IR;
-    // Acceleronmeter Data
-    struct accel_t
+    struct Vector
     {
-      float x;
-      float y;
-      float z;
-    } accel;
-    // Gyro Data
-    struct gyro_t
-    {
-      float x;
-      float y;
-      float z;
-    } gyro;
-    // Compass Data
-    struct compass_t
-    {
-      float x;
-      float y;
-      float z;
-    } compass;
+      double x;
+      double y;
+      double z;
+    };
+    Vector accel;
+    Vector gyro;
+    Vector compass;
   private:
     // MPU Sensor Bias
-    float abx, aby, abz, gbx, gby, gbz;
+    double abx, aby, abz, gbx, gby, gbz;
     boolean initflag = true;
     // IR Setup
     int frontIrPin = A3;

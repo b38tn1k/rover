@@ -3,9 +3,7 @@
 // IMU Libraries
 #include <I2Cdev.h>
 #include <MPU6050.h>
-#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
-#endif
 // IR Range Finders
 #include <SharpIR.h>
 
@@ -84,7 +82,7 @@ void Sensors::determineMPUBias()
 {
   int counter = 0;
   int sampleCount = 500.0;
-  float ax, ay, az, gx, gy, gz = 0.0;
+  double ax, ay, az, gx, gy, gz = 0.0;
   while (counter < sampleCount) {
     readSensors();
     abx = abx + (accel.x / sampleCount);
@@ -110,11 +108,7 @@ void Sensors::determineMPUBias()
 
 void Sensors::init()
 {
-#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
   Wire.begin();
-#elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
-  Fastwire::setup(400, true);
-#endif
   mpu.initialize();
   determineMPUBias();
 

@@ -10,12 +10,13 @@ class Model
     Model();
     void updateModel(Sensors sensors, unsigned long delta);
     void prettyPrintData();
-    signed long heading; // about z axes (assuming normal operation)
-    signed long deltaHeading;
-    signed long velocity;
-    signed long pitch;
-    signed long roll;
-    signed long yaw;
+    double pitch;
+    double dPitch;
+    double roll;
+    double dRoll;
+    double yaw;
+    double dYaw;
+
 };
 
 #endif
