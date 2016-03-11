@@ -43,9 +43,10 @@ void loop()
 
   sensors.readSensors(); // about 9ms
   // sensors.prettyPrintData();
-  model.updateModel(sensors);
-  delay(2000);
+  model.updateModel(sensors, loopDelta);
+  model.prettyPrintData();
 
+  // delay(2000);
   // LOOP-COUNTER: NOTHING BELOW HERE
   loopDelta = millis() - loopStart;
   loopCounter++;

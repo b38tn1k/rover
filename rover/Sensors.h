@@ -60,7 +60,6 @@ class Sensors
     I2Cdev I2C_M;
     int16_t ax, ay, az;
     int16_t gx, gy, gz;
-    int16_t mx, my, mz;
     // Data Aquisition Functions
     void readMPU();
     void readIR();

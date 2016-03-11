@@ -50,20 +50,34 @@ void Sensors::readIR()
 
 void Sensors::prettyPrintData()
 {
-  Serial.println("IR_FRONT:");
-  Serial.println(IR.front);
-  Serial.println(IR.rear);
+  Serial.println("IR_FRONT_REAR:");
+  Serial.print(IR.front);
+  Serial.println(" cm");
+  Serial.print(IR.rear);
+  Serial.println(" cm");
   Serial.println();
   Serial.println("ACCELXYZ:");
-  Serial.println(accel.x);
-  Serial.println(accel.y);
-  Serial.println(accel.z);
+  Serial.print(accel.x);
+  Serial.println(" g");
+  Serial.print(accel.y);
+  Serial.println(" g");
+  Serial.print(accel.z);
+  Serial.println(" g");
   Serial.println();
   Serial.println("GYROXYZ:");
-  Serial.println(gyro.x);
-  Serial.println(gyro.y);
-  Serial.println(gyro.z);
+  Serial.print(gyro.x);
+  Serial.println(" deg/sec");
+  Serial.print(gyro.y);
+  Serial.println(" deg/sec");
+  Serial.print(gyro.z);
+  Serial.println(" deg/sec");
   Serial.println();
+  // Serial.println("COMPASSXYZ");
+  // Serial.println(compass.x);
+  // Serial.println(compass.y);
+  // Serial.println(compass.z);
+  // Serial.println();
+
 }
 
 void Sensors::determineMPUBias()
@@ -103,6 +117,6 @@ void Sensors::init()
 #endif
   mpu.initialize();
   determineMPUBias();
-  
+
   initflag = false;
 }

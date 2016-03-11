@@ -8,8 +8,10 @@ class Model
 {
   public:
     Model();
-    void updateModel(Sensors sensors);
-    signed long heading;
+    void updateModel(Sensors sensors, unsigned long delta);
+    void prettyPrintData();
+    signed long heading; // about z axes (assuming normal operation)
+    signed long deltaHeading;
     signed long velocity;
     signed long pitch;
     signed long roll;
