@@ -5,6 +5,7 @@ Software for a Hercules Platform utilising various cheap sensors:
   - Sharp IR Range Finders * 2
   - Seeed Studios Grove IMU 9DOF
   - onboard hall encoders ignored for now
+Rover must be on all 4 wheels on horizontal surface at start up
 */
 
 // Pixy Cam Libraries
@@ -20,6 +21,7 @@ Software for a Hercules Platform utilising various cheap sensors:
 #include <motordriver_4wd.h>
 #include <seeed_pwm.h>
 // My Stuff
+#include "Vector3D.h"
 #include "Sensors.h"
 #include "Model.h"
 Sensors sensors = Sensors();
@@ -39,9 +41,9 @@ void setup()
 void loop()
 {
   sensors.readSensors(); // about 9ms
-  // sensors.prettyPrintData();
+  sensors.prettyPrint();
   model.updateModel(sensors, loopDelta);
-  model.prettyPrintData();
+  model.prettyPrint();
 
   // LOOP-COUNTER: NOTHING BELOW HERE
   loopDelta = millis() - loopStart;

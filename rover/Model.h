@@ -3,20 +3,19 @@
 #define Model_h
 
 #include "Sensors.h"
+#include "Vector3D.h"
+
 
 class Model
 {
   public:
     Model();
     void updateModel(Sensors sensors, unsigned long delta);
-    void prettyPrintData();
-    double pitch;
-    double dPitch;
-    double roll;
-    double dRoll;
-    double yaw;
-    double dYaw;
-
+    void prettyPrint();
+    Vector3D::Vector deltaPose;
+    Vector3D::Vector pose;
+  private:
+    Vector3D vec3;
 };
 
 #endif

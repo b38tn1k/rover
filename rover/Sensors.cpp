@@ -6,6 +6,8 @@
 #include "Wire.h"
 // IR Range Finders
 #include <SharpIR.h>
+// my stuff
+#include "Vector3D.h"
 
 Sensors::Sensors()
 {
@@ -46,7 +48,7 @@ void Sensors::readIR()
   IR.rear = rearIR.distance();
 }
 
-void Sensors::prettyPrintData()
+void Sensors::prettyPrint()
 {
   Serial.println("IR_FRONT_REAR:");
   Serial.print(IR.front);
@@ -54,35 +56,15 @@ void Sensors::prettyPrintData()
   Serial.print(IR.rear);
   Serial.println(" cm");
   Serial.println();
-  Serial.println("ACCELXYZ:");
-  Serial.print(accel.x);
-  Serial.println(" g");
-  Serial.print(accel.y);
-  Serial.println(" g");
-  Serial.print(accel.z);
-  Serial.println(" g");
-  Serial.println();
-  Serial.println("GYROXYZ:");
-  Serial.print(gyro.x);
-  Serial.println(" deg/sec");
-  Serial.print(gyro.y);
-  Serial.println(" deg/sec");
-  Serial.print(gyro.z);
-  Serial.println(" deg/sec");
-  Serial.println();
-  // Serial.println("COMPASSXYZ");
-  // Serial.println(compass.x);
-  // Serial.println(compass.y);
-  // Serial.println(compass.z);
-  // Serial.println();
 
+  vec3.prettyPrint(accel, "ACCEL", "g");
+  vec3.prettyPrint(gyro, "GYRO", "deg/s");
 }
 
 void Sensors::determineMPUBias()
 {
   int counter = 0;
   int sampleCount = 500.0;
-  double ax, ay, az, gx, gy, gz = 0.0;
   while (counter < sampleCount) {
     readSensors();
     abx = abx + (accel.x / sampleCount);
@@ -93,7 +75,6 @@ void Sensors::determineMPUBias()
     gbz = gbz + (gyro.z / sampleCount);
     counter++;
   }
-
   Serial.println("Accel Bias:");
   Serial.println(abx);
   Serial.println(aby);

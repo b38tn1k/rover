@@ -1,5 +1,4 @@
 // James Carthew Feb 2016
-// A Simple API for some sensor data in my rover
 #ifndef Sensors_h
 #define Sensors_h
 // IMU Libraries
@@ -8,6 +7,8 @@
 #include "Wire.h"
 // IR Range Finders
 #include <SharpIR.h>
+// my stuff
+#include "Vector3D.h"
 
 class Sensors
 {
@@ -15,25 +16,19 @@ class Sensors
     Sensors();
     void init();
     void readSensors();
-    void prettyPrintData();
+    void prettyPrint();
     // IR Data
     struct IR_t
     {
       double front;
       double rear;
     } IR;
-    struct Vector
-    {
-      double x;
-      double y;
-      double z;
-    };
-    Vector accel;
-    Vector gyro;
-    Vector compass;
+    Vector3D::Vector accel;
+    Vector3D::Vector gyro;
+    Vector3D::Vector compass;
   private:
     // MPU Sensor Bias
-    double abx, aby, abz, gbx, gby, gbz;
+    double abx, aby, abz, gbx, gby, gbz; // due to gravity only occuring in one direction I think it is easier to treat these guys seperate rather than as a Vector (for now atleast).
     boolean initflag = true;
     // IR Setup
     int frontIrPin = A3;
@@ -50,6 +45,7 @@ class Sensors
     void readMPU();
     void readIR();
     void determineMPUBias();
+    Vector3D vec3;
 };
 
 #endif

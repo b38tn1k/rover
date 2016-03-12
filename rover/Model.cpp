@@ -1,6 +1,8 @@
 #include "Arduino.h"
+// my stuff
 #include "Model.h"
 #include "Sensors.h"
+#include "Vector3D.h"
 
 Model::Model()
 {
@@ -9,23 +11,12 @@ Model::Model()
 
 void Model::updateModel(Sensors sensors, unsigned long delta)
 {
-  dRoll = sensors.gyro.x * delta / 1000;
-  roll += dRoll;
-  dPitch = sensors.gyro.y * delta / 1000;
-  pitch += dPitch;
-  dYaw = sensors.gyro.z * delta / 1000;
-  yaw += dYaw;
+  deltaPose = vec3.multiply(sensors.gyro, delta);
+  deltaPose = vec3.multiply(deltaPose, 0.001);
+  pose = vec3.add(pose, deltaPose);
 }
 
-void Model::prettyPrintData()
+void Model::prettyPrint()
 {
-  Serial.println("ROLL");
-  Serial.print(roll);
-  Serial.println(" deg");
-  Serial.println("PITCH");
-  Serial.print(pitch);
-  Serial.println(" deg");
-  Serial.println("YAW");
-  Serial.print(yaw);
-  Serial.println(" deg");
+  vec3.prettyPrint(pose, "ROLL/PITCH/YAW", "deg");
 }
