@@ -28,7 +28,8 @@ class Sensors
     Vector3D::Vector compass;
   private:
     // MPU Sensor Bias
-    double abx, aby, abz, gbx, gby, gbz; // due to gravity only occuring in one direction I think it is easier to treat these guys seperate rather than as a Vector (for now atleast).
+    Vector3D::Vector gyroBias;
+    Vector3D::Vector accelBias;
     boolean initflag = true;
     // IR Setup
     int frontIrPin = A3;
@@ -45,6 +46,7 @@ class Sensors
     void readMPU();
     void readIR();
     void determineMPUBias();
+    // Maths
     Vector3D vec3;
 };
 
