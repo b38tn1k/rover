@@ -3,7 +3,7 @@
 #define Sensors_h
 // IMU Libraries
 #include <I2Cdev.h>
-#include <MPU6050.h>
+#include <MPU9250.h>
 #include "Wire.h"
 // IR Range Finders
 #include <SharpIR.h>
@@ -22,7 +22,8 @@ class Sensors
     {
       double front;
       double rear;
-    } IR;
+    };
+    IR_t ir;
     Vector3D::Vector accel;
     Vector3D::Vector gyro;
     Vector3D::Vector compass;
@@ -38,10 +39,11 @@ class Sensors
     SharpIR frontIR = SharpIR(frontIrPin, irModel);
     SharpIR rearIR = SharpIR(rearIrPin, irModel);
     // IMU Setup
-    MPU6050 mpu;
-    I2Cdev I2C_M;
+    MPU9250 mpu;
     int16_t ax, ay, az;
     int16_t gx, gy, gz;
+    int16_t mx, my, mz;
+    uint8_t buffer_m[6];
     // Data Aquisition Functions
     void readMPU();
     void readIR();

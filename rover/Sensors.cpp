@@ -2,7 +2,7 @@
 #include "Sensors.h"
 // IMU Libraries
 #include <I2Cdev.h>
-#include <MPU6050.h>
+#include <MPU9250.h>
 #include "Wire.h"
 // IR Range Finders
 #include <SharpIR.h>
@@ -23,9 +23,11 @@ void Sensors::readMPU()
 {
   // 16384 is 1g for MPU6050 with range +/- 2g represented over [-32768, +32767]
   // 131 is 1 deg/sec with range +/- 250 deg/sec represented over [-32768, +32767]
-  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  // TODO: find documentation on compass.
+  mpu.getMotion9(&ax, &ay, &az, &gx, &gy, &gz, &mx, &my, &mz);
   accel = vec3.double2vec(ax, ay, az);
   gyro = vec3.double2vec(gx, gy, gz);
+  compass = vec3.double2vec(mx, my, mz);
   if (initflag == false) {
     accel = vec3.subtract(accel, accelBias);
     accel = vec3.multiply(accel, 1.0/16384.0);
@@ -36,22 +38,23 @@ void Sensors::readMPU()
 
 void Sensors::readIR()
 {
-  IR.front = frontIR.distance();
-  IR.rear = rearIR.distance();
+  ir.front = frontIR.distance();
+  ir.rear = rearIR.distance();
 }
 
 void Sensors::prettyPrint()
 {
   Serial.println("IR_FRONT_REAR:");
-  Serial.print(IR.front);
+  Serial.print(ir.front);
   Serial.println(" cm");
-  Serial.print(IR.rear);
+  Serial.print(ir.rear);
   Serial.println(" cm");
   vec3.prettyPrint(accel, "ACCEL", "g");
   vec3.prettyPrint(gyro, "GYRO", "deg/s");
+  vec3.prettyPrint(compass, "COMPASS", "deg");
 }
 
-void Sensors::determineMPUBias()
+void Sensors::determineMPUBias() //TODO: compass?
 {
   int counter = 0;
   int sampleCount = 500;

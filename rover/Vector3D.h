@@ -16,6 +16,12 @@ class Vector3D
     Vector add(Vector a, Vector b);
     Vector subtract(Vector a, Vector b);
     Vector multiply(Vector a, double gain);
+    /*
+    TODO:
+    - dot product
+    - cross product
+    - polar <=> cartesian
+    */
     void prettyPrint(Vector a, char title[], char units[]);
 };
 

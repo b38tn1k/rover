@@ -14,7 +14,7 @@ Rover must be on all 4 wheels on horizontal surface at start up
 // IMU Libraries
 #include <Wire.h>
 #include <I2Cdev.h>
-#include <MPU6050.h>
+#include <MPU9250.h>
 // IR Range Finders
 #include <SharpIR.h>
 // Hercules Motor Controller
