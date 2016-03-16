@@ -1,3 +1,4 @@
+// James Carthew March 2016
 #include "Vector3D.h"
 #include "Arduino.h"
 
@@ -54,4 +55,18 @@ void Vector3D::prettyPrint(Vector a, char title[], char units[])
   Serial.print(a.z);
   Serial.print(" ");
   Serial.println(units);
+}
+
+double Vector3D::dot(Vector a, Vector b)
+{
+  return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+Vector3D::Vector Vector3D::cross(Vector a, Vector b)
+{
+  Vector3D::Vector newVec;
+  newVec.x = (a.y * b.z) - (a.z * b.y);
+  newVec.y = (a.z * b.x) - (a.x * b.z);
+  newVec.z = (a.x * b.y) - (a.y * b.x);
+  return newVec;
 }

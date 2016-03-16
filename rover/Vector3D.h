@@ -1,4 +1,4 @@
-// James Carthew Feb 2016
+// James Carthew March 2016
 #ifndef Vector3D_h
 #define Vector3D_h
 
@@ -16,12 +16,8 @@ class Vector3D
     Vector add(Vector a, Vector b);
     Vector subtract(Vector a, Vector b);
     Vector multiply(Vector a, double gain);
-    /*
-    TODO:
-    - dot product
-    - cross product
-    - polar <=> cartesian
-    */
+    double dot(Vector a, Vector b);
+    Vector cross(Vector a, Vector b);
     void prettyPrint(Vector a, char title[], char units[]);
 };
 
