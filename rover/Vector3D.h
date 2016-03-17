@@ -19,6 +19,7 @@ class Vector3D
     double dot(Vector a, Vector b);
     Vector cross(Vector a, Vector b);
     void prettyPrint(Vector a, char title[], char units[]);
+    void quickPrint(Vector a);
 };
 
 #endif

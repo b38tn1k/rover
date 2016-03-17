@@ -41,9 +41,11 @@ void setup()
 void loop()
 {
   sensors.readSensors(); // about 9ms
-  sensors.prettyPrint();
   model.updateModel(sensors, loopDelta);
-  model.prettyPrint();
+  // IR(2) ACCEL(3) GYRO(3) COMPASS(3) POSE(3)
+  sensors.quickPrint();
+  model.quickPrint();
+  Serial.println('u');
 
   // LOOP-COUNTER: NOTHING BELOW HERE
   loopDelta = millis() - loopStart;

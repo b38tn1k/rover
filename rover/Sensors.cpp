@@ -54,6 +54,15 @@ void Sensors::prettyPrint()
   vec3.prettyPrint(compass, "COMPASS", "deg");
 }
 
+void Sensors::quickPrint()
+{
+  Serial.println(ir.front);
+  Serial.println(ir.rear);
+  vec3.quickPrint(accel);
+  vec3.quickPrint(gyro);
+  vec3.quickPrint(compass);
+}
+
 void Sensors::determineMPUBias() //TODO: compass?
 {
   int counter = 0;

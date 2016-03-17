@@ -20,3 +20,8 @@ void Model::prettyPrint()
 {
   vec3.prettyPrint(pose, "ROLL/PITCH/YAW", "deg");
 }
+
+void Model::quickPrint()
+{
+  vec3.quickPrint(pose);
+}

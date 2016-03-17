@@ -17,6 +17,7 @@ class Sensors
     void init();
     void readSensors();
     void prettyPrint();
+    void quickPrint();
     // IR Data
     struct IR_t
     {

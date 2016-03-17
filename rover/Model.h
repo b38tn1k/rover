@@ -12,6 +12,7 @@ class Model
     Model();
     void updateModel(Sensors sensors, unsigned long delta);
     void prettyPrint();
+    void quickPrint();
     Vector3D::Vector deltaPose;
     Vector3D::Vector pose;
   private:

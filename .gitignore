@@ -29,3 +29,5 @@
 
 Project Resource Directories
 /z_extras/*
+
+*.pyc

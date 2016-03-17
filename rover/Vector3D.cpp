@@ -57,6 +57,13 @@ void Vector3D::prettyPrint(Vector a, char title[], char units[])
   Serial.println(units);
 }
 
+void Vector3D::quickPrint(Vector a)
+{
+  Serial.println(a.x);
+  Serial.println(a.y);
+  Serial.println(a.z);
+}
+
 double Vector3D::dot(Vector a, Vector b)
 {
   return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
