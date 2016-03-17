@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import curses
+from rover import rover
+
+my_rover = rover()
+my_rover.connect()
+
+while True:
+    # print(my_rover.serial.readline())
+    my_rover.read()
