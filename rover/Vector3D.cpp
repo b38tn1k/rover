@@ -55,6 +55,7 @@ void Vector3D::prettyPrint(Vector a, char title[], char units[])
   Serial.print(a.z);
   Serial.print(" ");
   Serial.println(units);
+  Serial.flush();
 }
 
 void Vector3D::quickPrint(Vector a)
@@ -62,6 +63,7 @@ void Vector3D::quickPrint(Vector a)
   Serial.println(a.x);
   Serial.println(a.y);
   Serial.println(a.z);
+  Serial.flush();
 }
 
 double Vector3D::dot(Vector a, Vector b)

@@ -36,6 +36,7 @@ void setup()
   Serial.println("\nHello, World!");
   MOTOR.init();
   sensors.init();
+  
 }
 
 void loop()
@@ -43,10 +44,13 @@ void loop()
   sensors.readSensors(); // about 9ms
   model.updateModel(sensors, loopDelta);
   // IR(2) ACCEL(3) GYRO(3) COMPASS(3) POSE(3)
-  sensors.quickPrint();
-  model.quickPrint();
-  Serial.println('u');
-
+  if (Serial.available()) {
+    if (Serial.read() == 'r') {
+//      sensors.prettyPrint();
+      sensors.quickPrint();
+//      model.quickPrint();
+    }
+  }
   // LOOP-COUNTER: NOTHING BELOW HERE
   loopDelta = millis() - loopStart;
   loopStart = millis();

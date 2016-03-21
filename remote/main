@@ -1,11 +1,27 @@
 #!/usr/bin/python
-
 import curses
+from time import sleep
 from rover import rover
-
-my_rover = rover()
+# INIT CURSES STUFF
+screen = curses.initscr()
+curses.noecho()
+dimensions = screen.getmaxyx()
+xmax = dimensions[0]
+ymax = dimensions[1]
+curses.start_color()
+curses.use_default_colors()
+curses.curs_set(0)
+screen.clear()
+# CONNECT TO ROVER
+my_rover = rover('/dev/tty.usbserial-AJV9OOBQ')
+screen.addstr(1, 1, 'ROVER1 Remote Terminal connecting to ' + my_rover.address)
+screen.refresh()
 my_rover.connect()
-
+while my_rover.connected is False:
+    sleep(0.2)
+screen.addstr(1, 1, 'ROVER1 Remote Terminal connected on ' + my_rover.address)
+screen.refresh()
 while True:
-    # print(my_rover.serial.readline())
     my_rover.read()
+    my_rover.log2curses(screen, xmax)
+    sleep(0.2)

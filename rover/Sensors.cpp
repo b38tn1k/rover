@@ -44,23 +44,23 @@ void Sensors::readIR()
 
 void Sensors::prettyPrint()
 {
+  vec3.prettyPrint(accel, "ACCEL", "g");
+  vec3.prettyPrint(gyro, "GYRO", "deg/s");
+  vec3.prettyPrint(compass, "COMPASS", "deg");
   Serial.println("IR_FRONT_REAR:");
   Serial.print(ir.front);
   Serial.println(" cm");
   Serial.print(ir.rear);
   Serial.println(" cm");
-  vec3.prettyPrint(accel, "ACCEL", "g");
-  vec3.prettyPrint(gyro, "GYRO", "deg/s");
-  vec3.prettyPrint(compass, "COMPASS", "deg");
 }
 
 void Sensors::quickPrint()
 {
-  Serial.println(ir.front);
-  Serial.println(ir.rear);
   vec3.quickPrint(accel);
   vec3.quickPrint(gyro);
   vec3.quickPrint(compass);
+  Serial.println(ir.front);
+  Serial.println(ir.rear);
 }
 
 void Sensors::determineMPUBias() //TODO: compass?
@@ -79,8 +79,10 @@ void Sensors::determineMPUBias() //TODO: compass?
     gyroBias = vec3.add(gyroBias, gyro);
     counter++;
   }
-  vec3.prettyPrint(accelBias, "ACCEL BIAS", "ticks");
-  vec3.prettyPrint(gyroBias, "GYRO BIAS", "ticks");
+  // vec3.prettyPrint(accelBias, "ACCEL BIAS", "ticks");
+  // vec3.prettyPrint(gyroBias, "GYRO BIAS", "ticks");
+  vec3.quickPrint(accelBias);
+  vec3.quickPrint(gyroBias);
 }
 
 void Sensors::init()
