@@ -2,29 +2,34 @@
 import curses
 from time import sleep
 from rover import rover
-# INIT CURSES STUFF
-screen = curses.initscr()
-curses.start_color()
-curses.use_default_colors()
-curses.curs_set(0)
-screen.clear()
-curses.noecho()
-dimensions = screen.getmaxyx()
-ymax = dimensions[0]
-xmax = dimensions[1]
 
-# CONNECT TO ROVER
-my_rover = rover('/dev/tty.usbserial-AJV9OOBQ')
-screen.addstr(1, 1, 'ROVER1 Remote Terminal connecting to ' + my_rover.address, curses.A_STANDOUT)
-screen.refresh()
-my_rover.connect()
-if my_rover.connected is True:
-    screen.addstr(1, 1, 'ROVER1 Remote Terminal connected on ' + my_rover.address, curses.A_STANDOUT)
+
+def main(screen):
+    # INIT CURSES STUFF
+    curses.use_default_colors()
+    curses.curs_set(0)
+    screen.nodelay(True)
+    dims = screen.getmaxyx()
+
+    # CONNECT TO ROVER
+    my_rover = rover('/dev/tty.usbserial-AJV9OOBQ')
+    screen.addstr(1, 1, 'ROVER1', curses.A_STANDOUT)
+    screen.addstr(1, 7, ' connecting to ' + my_rover.address, curses.A_DIM)
     screen.refresh()
-else:
-    exit()
-while my_rover.connected is True:
-    my_rover.read()
-    my_rover.log2curses(screen)
-    sleep(0.2)
-exit()
+    my_rover.connect()
+    if my_rover.connected is True:
+        # MENU
+        screen.addstr(1, 7, ' connected on ' + my_rover.address, curses.A_DIM)
+        screen.addstr((dims[0]-1), (dims[1] - 7), '[q]uit')
+        screen.refresh()
+    else:
+        print("Connection Failed")
+        exit()
+    while my_rover.connected is True:
+        my_rover.read()
+        my_rover.log2curses(screen)
+        user_input = screen.getch()
+        if user_input == ord('q'):
+            exit()
+
+curses.wrapper(main)

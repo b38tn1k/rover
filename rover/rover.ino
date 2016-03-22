@@ -23,9 +23,7 @@ Rover must be on all 4 wheels on horizontal surface at start up
 // My Stuff
 #include "Vector3D.h"
 #include "Sensors.h"
-#include "Model.h"
 Sensors sensors = Sensors();
-Model model = Model();
 unsigned long  loopStart = 0;
 unsigned long loopDelta = 10;
 long loopCounter = 0;
@@ -42,13 +40,9 @@ void setup()
 void loop()
 {
   sensors.readSensors(); // about 9ms
-  model.updateModel(sensors, loopDelta);
-  // IR(2) ACCEL(3) GYRO(3) COMPASS(3) POSE(3)
-  if (Serial.available()) {
+  if (Serial.available() > 0) {
     if (Serial.read() == 'r') {
-//      sensors.prettyPrint();
       sensors.quickPrint();
-//      model.quickPrint();
     }
   }
   // LOOP-COUNTER: NOTHING BELOW HERE
