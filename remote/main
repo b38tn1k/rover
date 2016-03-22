@@ -10,7 +10,6 @@ def main(screen):
     curses.curs_set(0)
     screen.nodelay(True)
     dims = screen.getmaxyx()
-
     # CONNECT TO ROVER
     my_rover = rover('/dev/tty.usbserial-AJV9OOBQ')
     screen.addstr(1, 1, 'ROVER1', curses.A_STANDOUT)
@@ -18,7 +17,6 @@ def main(screen):
     screen.refresh()
     my_rover.connect()
     if my_rover.connected is True:
-        # MENU
         screen.addstr(1, 7, ' connected on ' + my_rover.address, curses.A_DIM)
         screen.addstr((dims[0]-1), (dims[1] - 7), '[q]uit')
         screen.refresh()

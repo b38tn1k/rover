@@ -1,6 +1,11 @@
 import serial
-import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import curses
+
+
+def float2string(i):
+    return '{:+06.2f}'.format(i)
 
 
 class rover(object):
@@ -71,29 +76,29 @@ class rover(object):
         screen.addstr(y_offset + 1,        1,                       'X:', curses.A_DIM)
         screen.addstr(y_offset + 1,        dims[1]/3,               'Y:', curses.A_DIM)
         screen.addstr(y_offset + 1,        2*dims[1]/3,             'Z:', curses.A_DIM)
-        screen.addstr(y_offset + 1,        4,                       "{0:.2f}".format(self.accel['X']))
-        screen.addstr(y_offset + 1,        (3 + dims[1]/3),         "{0:.2f}".format(self.accel['Y']))
-        screen.addstr(y_offset + 1,        (3 + 2*dims[1]/3),       "{0:.2f}".format(self.accel['Z']))
+        screen.addstr(y_offset + 1,        4,                       float2string(self.accel['X']))
+        screen.addstr(y_offset + 1,        (3 + dims[1]/3),         float2string(self.accel['Y']))
+        screen.addstr(y_offset + 1,        (3 + 2*dims[1]/3),       float2string(self.accel['Z']))
         # GYRO
         screen.addstr(y_offset + 2,        1,                       'Gyroscope', curses.A_BOLD)
         screen.addstr(y_offset + 3,        1,                       'X:', curses.A_DIM)
         screen.addstr(y_offset + 3,        dims[1]/3,               'Y:', curses.A_DIM)
         screen.addstr(y_offset + 3,        2*dims[1]/3,             'Z:', curses.A_DIM)
-        screen.addstr(y_offset + 3,        4,                       "{0:.2f}".format(self.gyro['X']))
-        screen.addstr(y_offset + 3,        (3 + dims[1]/3),         "{0:.2f}".format(self.gyro['Y']))
-        screen.addstr(y_offset + 3,        (3 + 2*dims[1]/3),       "{0:.2f}".format(self.gyro['Z']))
+        screen.addstr(y_offset + 3,        4,                       float2string(self.gyro['X']))
+        screen.addstr(y_offset + 3,        (3 + dims[1]/3),         float2string(self.gyro['Y']))
+        screen.addstr(y_offset + 3,        (3 + 2*dims[1]/3),       float2string(self.gyro['Z']))
         # COMPASS
         screen.addstr(y_offset + 4,        1,                       'Compass', curses.A_BOLD)
         screen.addstr(y_offset + 5,        1,                       'X:', curses.A_DIM)
         screen.addstr(y_offset + 5,        dims[1]/3,               'Y:', curses.A_DIM)
         screen.addstr(y_offset + 5,        2*dims[1]/3,             'Z:', curses.A_DIM)
-        screen.addstr(y_offset + 5,        4,                       "{0:.2f}".format(self.compass['X']))
-        screen.addstr(y_offset + 5,        (3 + dims[1]/3),         "{0:.2f}".format(self.compass['Y']))
-        screen.addstr(y_offset + 5,        (3 + 2*dims[1]/3),       "{0:.2f}".format(self.compass['Z']))
+        screen.addstr(y_offset + 5,        4,                       float2string(self.compass['X']))
+        screen.addstr(y_offset + 5,        (3 + dims[1]/3),         float2string(self.compass['Y']))
+        screen.addstr(y_offset + 5,        (3 + 2*dims[1]/3),       float2string(self.compass['Z']))
         # IR
         screen.addstr(y_offset + 6,        1,                        'IR', curses.A_BOLD)
         screen.addstr(y_offset + 7,        1,                        'F: ', curses.A_DIM)
         screen.addstr(y_offset + 7,        dims[1]/3,                'R: ', curses.A_DIM)
-        screen.addstr(y_offset + 7,        3,                        "{0:.2f}".format(self.ir['FRONT']))
-        screen.addstr(y_offset + 7,        (3 + dims[1]/3),          "{0:.2f}".format(self.ir['REAR']))
+        screen.addstr(y_offset + 7,        4,                        float2string(self.ir['FRONT']))
+        screen.addstr(y_offset + 7,        (3 + dims[1]/3),          float2string(self.ir['REAR']))
         screen.refresh()
