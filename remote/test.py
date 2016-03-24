@@ -11,4 +11,6 @@ while True:
     my_rover.read()
     my_rover.log2cli()
     sleep(0.2)
+    my_rover.graph_accel()
     my_rover.graph_compass()
+    my_rover.graph_gyro()

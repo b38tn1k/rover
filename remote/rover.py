@@ -35,7 +35,7 @@ class Rover(object):
 
     def graph_gyro(self):
         if self.gyro_graph is None:
-            self.gyro_graph = XYZPlotlyHandler("Rover1", "Gyro Data", 6, "DEGREES/SEC", 180)
+            self.gyro_graph = XYZPlotlyHandler("Rover1", "Gyro Data", 7, "DEGREES/SEC", 180)
         else:
             self.gyro_graph.update(self.gyro)
 
