@@ -1,29 +1,14 @@
 import serial
 import curses
-import plotly.plotly as py
-from plotly.graph_objs import Scatter, Layout, Figure, Data, Stream, YAxis
-import datetime
+from time import sleep
+from xyzplotlyhandler import XYZPlotlyHandler
 
 
 def float2string(i):
     return '{:+06.2f}'.format(i)
 
 
-def new_scatter(name, token):
-    new_scatter = Scatter(
-        x=[],
-        y=[],
-        name=name,
-        showlegend=True,
-        stream=dict(
-            token=token,
-            maxpoints=200
-        )
-    )
-    return new_scatter
-
-
-class rover(object):
+class Rover(object):
     def __init__(self, address):
         self.address = address
         self.ir = {'FRONT': 0, 'REAR': 0}
@@ -32,36 +17,27 @@ class rover(object):
         self.compass = {'X': 0, 'Y': 0, 'Z': 0, 'BIASX': 0, 'BIASY': 0, 'BIASZ': 0}
         self.pose = {'X': 0, 'Y': 0, 'Z': 0}
         self.connected = False
-        with open('stream_tokens.secret') as f:
-            self.stream_tokens = f.readlines()
+        self.accel_graph = None
+        self.gyro_graph = None
+        self.compass_graph = None
 
-    def initialize_plotly(self):
-        self.accelx_t = new_scatter('Accelerometer X', self.stream_tokens[1].rstrip())
-        self.accely_t = new_scatter('Accelerometer Y', self.stream_tokens[2].rstrip())
-        self.accelz_t = new_scatter('Accelerometer Z', self.stream_tokens[3].rstrip())
-        layout = Layout(
-            title='Rover1 Accelerometer',
-            yaxis=YAxis(
-                title='G forces (9.81ms^-2)',
-                range=[-1.5, 1.5]
-            )
-        )
-        data = Data([self.accelx_t, self.accely_t, self.accelz_t])
-        fig = Figure(data=data, layout=layout)
-        self.accelx_stream = py.Stream(self.stream_tokens[1].rstrip())
-        self.accely_stream = py.Stream(self.stream_tokens[2].rstrip())
-        self.accelz_stream = py.Stream(self.stream_tokens[3].rstrip())
-        self.accelx_stream.open()
-        self.accely_stream.open()
-        self.accelz_stream.open()
-        self.plotly_address = str(py.plot(fig, filename='Rover1 Accelerometer'))
-        print(self.plotly_address)
+    def graph_accel(self):
+        if self.accel_graph is None:
+            self.accel_graph = XYZPlotlyHandler("Rover1", "Accelerometer Data", 0, "G-FORCES", 1.5)
+        else:
+            self.accel_graph.update(self.accel)
 
-    def update_plotly(self):
-        now = datetime.datetime.now()
-        self.accelx_stream.write({'x': now, 'y': self.accel['X']})
-        self.accely_stream.write({'x': now, 'y': self.accel['Y']})
-        self.accelz_stream.write({'x': now, 'y': self.accel['Z']})
+    def graph_compass(self):
+        if self.compass_graph is None:
+            self.compass_graph = XYZPlotlyHandler("Rover1", "Compass Data", 3, "DEGREES", 180)
+        else:
+            self.compass_graph.update(self.compass)
+
+    def graph_gyro(self):
+        if self.gyro_graph is None:
+            self.gyro_graph = XYZPlotlyHandler("Rover1", "Gyro Data", 6, "DEGREES/SEC", 180)
+        else:
+            self.gyro_graph.update(self.gyro)
 
     def connect(self):
         self.serial = serial.Serial('/dev/tty.usbserial-AJV9OOBQ', 38400)
