@@ -28,6 +28,8 @@ def main(screen):
     my_rover = Rover('/dev/tty.usbserial-AJV9OOBQ')
     screen.addstr(1, 1, 'ROVER1', curses.A_STANDOUT)
     screen.addstr(1, 7, ' connecting to ' + my_rover.address, curses.A_DIM)
+    screen.addstr(3, 1, 'DO NOT ADJUST YOUR TERMINAL', curses.A_BLINK)
+    screen.addstr(4, 1, 'YOU WILL BREAK SOMETHING', curses.A_BLINK)
     screen.refresh()
     my_rover.connect()
     if my_rover.connected is True:
@@ -64,9 +66,12 @@ def main(screen):
         if user_input == ord('q'):
             exit()
         if user_input == ord('p'):
-            console.appendleft('Select data to plot: [1] Accelerometer, [2] Gyroscope, [3] Compass')
-            console.appendleft('Plotting data significant increases delta t. Press [p] to cancel')
             toggle_plot = not(toggle_plot)
+            if toggle_plot is True:
+                console.appendleft('Select data to plot: [1] Accelerometer, [2] Gyroscope, [3] Compass')
+                console.appendleft('Plotting data significant increases delta t. Press [p] to cancel')
+            else:
+                console.appendleft('Plotting cancelled')
         if user_input == ord('1') and toggle_plot is True:
             console.appendleft('Plotting Accelerometer Data')
             plot_accel = True
