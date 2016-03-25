@@ -47,7 +47,6 @@ class XYZPlotlyHandler(object):
         self.y_stream.open()
         self.z_stream.open()
         self.plotly_address = py.plot(fig, filename='{}: {}'.format(project_title, name))
-        sleep(0.1)
 
     def update(self, data2plot):
         now = datetime.datetime.now()

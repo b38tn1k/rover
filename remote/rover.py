@@ -17,27 +17,27 @@ class Rover(object):
         self.compass = {'X': 0, 'Y': 0, 'Z': 0, 'BIASX': 0, 'BIASY': 0, 'BIASZ': 0}
         self.pose = {'X': 0, 'Y': 0, 'Z': 0}
         self.connected = False
-        self.accel_graph = None
-        self.gyro_graph = None
-        self.compass_graph = None
+        self.accel_plot = None
+        self.gyro_plot = None
+        self.compass_plot = None
 
-    def graph_accel(self):
-        if self.accel_graph is None:
-            self.accel_graph = XYZPlotlyHandler("Rover1", "Accelerometer Data", 0, "G-FORCES", 1.5)
+    def plot_accel(self):
+        if self.accel_plot is None:
+            self.accel_plot = XYZPlotlyHandler("Rover1", "Accelerometer Data", 0, "G-FORCES", 1.5)
         else:
-            self.accel_graph.update(self.accel)
+            self.accel_plot.update(self.accel)
 
-    def graph_compass(self):
-        if self.compass_graph is None:
-            self.compass_graph = XYZPlotlyHandler("Rover1", "Compass Data", 3, "DEGREES", 180)
+    def plot_compass(self):
+        if self.compass_plot is None:
+            self.compass_plot = XYZPlotlyHandler("Rover1", "Compass Data", 3, "DEGREES", 180)
         else:
-            self.compass_graph.update(self.compass)
+            self.compass_plot.update(self.compass)
 
-    def graph_gyro(self):
-        if self.gyro_graph is None:
-            self.gyro_graph = XYZPlotlyHandler("Rover1", "Gyro Data", 7, "DEGREES/SEC", 180)
+    def plot_gyro(self):
+        if self.gyro_plot is None:
+            self.gyro_plot = XYZPlotlyHandler("Rover1", "Gyro Data", 7, "DEGREES/SEC", 180)
         else:
-            self.gyro_graph.update(self.gyro)
+            self.gyro_plot.update(self.gyro)
 
     def connect(self):
         self.serial = serial.Serial('/dev/tty.usbserial-AJV9OOBQ', 38400)
@@ -92,6 +92,12 @@ class Rover(object):
 
     def log2curses(self, screen, y_offset=3):
         dims = screen.getmaxyx()
+        clear = [' '] * (dims[1] - 1)
+        delimiter = ['-'] * len(clear)
+        clear = ''.join(clear)
+        delimiter = ''.join(delimiter)
+        for i in range(0, 8):
+            screen.addstr(y_offset + i, 1, clear)
         # ACCEL
         screen.addstr(y_offset + 0,        1,                       'Accelerometer', curses.A_BOLD)
         screen.addstr(y_offset + 1,        1,                       'X:', curses.A_DIM)
@@ -122,4 +128,7 @@ class Rover(object):
         screen.addstr(y_offset + 7,        dims[1]/3,                'R: ', curses.A_DIM)
         screen.addstr(y_offset + 7,        4,                        float2string(self.ir['FRONT']))
         screen.addstr(y_offset + 7,        (3 + dims[1]/3),          float2string(self.ir['REAR']))
+        # END OF OUPUT
+        screen.addstr(y_offset + 8, 1, delimiter)
         screen.refresh()
+        return (y_offset + 9)
