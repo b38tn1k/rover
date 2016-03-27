@@ -31,12 +31,22 @@ bool newMessage = false;
 
 void act(char data[])
 {
+  // Check the data is formatted properly
   if (data[0] == '>') {
     if (data[1] == 'r') {
       sensors.readSensors();
       sensors.quickPrint();
     } else if (data[1] == 'c') {
       Serial.println("Control");
+    }
+  // If data is not formatted properly fix it for the future by locating header in serial queue
+  } else {
+    for (int i=0; i<MESSAGE_LENGTH;i++){
+      if (data[i] == '>') {
+        for (int j=i; j<MESSAGE_LENGTH;j++){
+          Serial.read(); // read junk of badly formatted message
+        }
+      }
     }
   }
 }
