@@ -8,6 +8,8 @@ Software for a Hercules Platform utilising various cheap sensors:
 Rover must be on all 4 wheels on horizontal surface at start up
 */
 
+#define MESSAGE_LENGTH 7
+
 // Pixy Cam Libraries
 #include <SPI.h>
 #include <Pixy.h>
@@ -24,29 +26,43 @@ Rover must be on all 4 wheels on horizontal surface at start up
 #include "Vector3D.h"
 #include "Sensors.h"
 Sensors sensors = Sensors();
-unsigned long  loopStart = 0;
-unsigned long loopDelta = 10;
-long loopCounter = 0;
+char message[MESSAGE_LENGTH];
+bool newMessage = false;
+
+void act(char data[])
+{
+  if (data[0] == '>') {
+    if (data[1] == 'r') {
+      sensors.readSensors();
+      sensors.quickPrint();
+    } else if (data[1] == 'c') {
+      Serial.println("Control");
+    }
+  }
+}
+  
 void setup()
 {
   Serial.begin(38400);
   delay(100);
   Serial.println("\nHello, World!");
-  MOTOR.init();
+  Serial.println(MESSAGE_LENGTH);
+//  MOTOR.init();
   sensors.init();
   
 }
 
 void loop()
 {
-  sensors.readSensors(); // about 9ms
-  if (Serial.available() > 0) {
-    if (Serial.read() == 'r') {
-      sensors.quickPrint();
-    }
+  
+  if (Serial.available() >= MESSAGE_LENGTH) {
+    newMessage = true;
   }
-  // LOOP-COUNTER: NOTHING BELOW HERE
-  loopDelta = millis() - loopStart;
-  loopStart = millis();
-  loopCounter++;
+  if (newMessage) {
+    for(int n=0; n<MESSAGE_LENGTH; n++) {
+      message[n] = Serial.read();
+    }
+    act(message);
+    newMessage = false;
+  }
 }

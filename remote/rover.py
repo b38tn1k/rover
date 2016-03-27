@@ -20,6 +20,7 @@ class Rover(object):
         self.accel_plot = None
         self.gyro_plot = None
         self.compass_plot = None
+        self.message_length = 0  # Set by Arduino upon connect
 
     def plot_accel(self):
         if self.accel_plot is None:
@@ -47,15 +48,20 @@ class Rover(object):
             if 'Hello, World!' in MOTD:
                 self.connected = True
                 break
-        self.accel['BIASX'] = float(self.serial.readline().rstrip())
-        self.accel['BIASY'] = float(self.serial.readline().rstrip())
-        self.accel['BIASZ'] = float(self.serial.readline().rstrip())
-        self.gyro['BIASX'] = float(self.serial.readline().rstrip())
-        self.gyro['BIASY'] = float(self.serial.readline().rstrip())
-        self.gyro['BIASZ'] = float(self.serial.readline().rstrip())
+        self.message_length = int(self.serial.readline().rstrip())
+        # self.accel['BIASX'] = float(self.serial.readline().rstrip())
+        # self.accel['BIASY'] = float(self.serial.readline().rstrip())
+        # self.accel['BIASZ'] = float(self.serial.readline().rstrip())
+        # self.gyro['BIASX'] = float(self.serial.readline().rstrip())
+        # self.gyro['BIASY'] = float(self.serial.readline().rstrip())
+        # self.gyro['BIASZ'] = float(self.serial.readline().rstrip())
+
+    def write(self, msg):
+        padding = ''.join([" "]*(self.message_length - len(">" + msg)))
+        self.serial.write(">" + msg + padding)
 
     def read(self):
-        self.serial.write("r")
+        self.write('r')
         # Accelerometer
         self.accel['X'] = float(self.serial.readline().rstrip())
         self.accel['Y'] = float(self.serial.readline().rstrip())

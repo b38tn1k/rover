@@ -81,8 +81,8 @@ void Sensors::determineMPUBias() //TODO: compass?
   }
   // vec3.prettyPrint(accelBias, "ACCEL BIAS", "ticks");
   // vec3.prettyPrint(gyroBias, "GYRO BIAS", "ticks");
-  vec3.quickPrint(accelBias);
-  vec3.quickPrint(gyroBias);
+//  vec3.quickPrint(accelBias);
+//  vec3.quickPrint(gyroBias);
 }
 
 void Sensors::init()
