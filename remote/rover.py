@@ -57,8 +57,8 @@ class Rover(object):
         # self.gyro['BIASZ'] = float(self.serial.readline().rstrip())
 
     def write(self, msg):
-        padding = ''.join([" "]*(self.message_length - len(">" + msg)))
-        self.serial.write(">" + msg + padding)
+        padding = ''.join(["|"]*(self.message_length - len("~" + msg)))
+        self.serial.write("~" + msg + padding)
 
     def read(self):
         self.write('r')
