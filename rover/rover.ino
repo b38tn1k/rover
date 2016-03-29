@@ -28,47 +28,50 @@ Sensors sensors = Sensors();
 char message[127];
 char header = '*';
 int messageLength = 0;
+bool incomming = false;
 
-void parse(char msg[]){
+void parse(char msg[]) {
   if (msg[0] == 'r') {
-    sensors.readSensors();
-    sensors.quickPrint();
+//    sensors.readSensors();
+//    sensors.quickPrint();
   }
 }
-  
+
+void logMessage(char msg[], int msgLength) {
+  Serial.print("Message Length: ");
+  Serial.println(msgLength);
+  Serial.print("Data ID: ");
+  Serial.println(msg[0]);
+  for (int i = 1; i < msgLength; i++) {
+    Serial.print("Data ");
+    Serial.print(i);
+    Serial.print(':');
+    Serial.println(msg[i]);
+  }
+}
+
 void setup()
 {
   Serial.begin(38400);
-  delay(100);
-//  MOTOR.init();
-  sensors.init();
+  //  MOTOR.init();
+  //  sensors.init();
   Serial.println("\nHello, World!");
 }
 
 void loop()
 {
-  if (Serial.available() > 2) {
-    // find the start of a message if there is junk
-    if (Serial.peek() != '~') {
-      Serial.read();
-    }
-    header= Serial.read();
+  // Is there a new message?
+  if (Serial.available() > 2 && Serial.peek() == '~') {
+    header = Serial.read();
     messageLength = Serial.read();
-    messageLength -= 100;
+    incomming = true;
   }
-  // if a header was found and the rest of the message has arrived, read it!
-  if (header == '~' && Serial.available() >= messageLength) {
-    for(int n=0; n<messageLength; n++) {
+  // Read the new message!
+  if (Serial.available() >= messageLength && incomming) {
+    for (int n = 0; n < messageLength; n++) {
       message[n] = Serial.read();
     }
-    parse(message);
-//    Serial.print("Message Length: ");
-//    Serial.println(messageLength);
-//    Serial.print("Data ID: ");
-//    Serial.println(message[0]);
-    header = '*';
-    messageLength = 0;
+    logMessage(message, messageLength);
+    incomming = false;
   }
-  
-      
 }

@@ -58,16 +58,18 @@ class Rover(object):
         # self.gyro['BIASZ'] = float(self.serial.readline().rstrip())
 
     def write(self, msg):
-        # need to look into bytearray
-
         # +--------+----------------+---------+------>
         # | Header | Message Length | Data ID | Data
         # +--------+----------------+---------+------>
-        new_message = '~er'
-        self.serial.write(new_message)
+        msg_length = chr(len(msg))
+        s = bytearray('~')
+        s.append(msg_length)
+        s = s + msg
+        for c in s:
+            self.serial.write(chr(c))
 
     def read(self):
-        self.write('r')
+        self.write(bytearray('r'))
         # Accelerometer
         self.accel['X'] = float(self.serial.readline().rstrip())
         self.accel['Y'] = float(self.serial.readline().rstrip())
