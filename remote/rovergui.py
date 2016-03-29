@@ -23,8 +23,8 @@ def main(screen):
     plot_gyro = False
     plot_compass = False
     wasd_mode = False
-    speed = 20
-    turning_ratio = 0.7
+    speed = 50
+    steering_ratio = 0.5
     # CONNECT TO ROVER
     my_rover = Rover('/dev/tty.usbserial-AJV9OOBQ')
     screen.addstr(1, 1, 'ROVER1', curses.A_STANDOUT)
@@ -82,7 +82,7 @@ def main(screen):
                 console.appendleft('Manual Mode using WASD keypad')
                 console.appendleft('Default Values:')
                 console.appendleft('Speed:\t\t{} with range 0:100'.format(speed))
-                console.appendleft('Turning Ratio:\t{} with range 0:1'.format(turning_ratio))
+                console.appendleft('Turning Ratio:\t{} with range 0:1'.format(steering_ratio))
                 console.appendleft('Primary Controls:')
                 console.appendleft('w:\t\tForwards')
                 console.appendleft('a:\t\tBackwards')
@@ -92,7 +92,6 @@ def main(screen):
                 console.appendleft('e:\t\t0 Turn Right')
                 console.appendleft('SPACE:\t\tBrake!')
                 console.appendleft('Secondary Controls:')
-                console.appendleft('SHIFT for +10 else +1:')
                 console.appendleft('x:\t\tIncrease Speed')
                 console.appendleft('z:\t\tDecrease Speed')
                 console.appendleft('r:\t\tIncrease Turn Ratio')
@@ -105,15 +104,31 @@ def main(screen):
         if wasd_mode is True and user_input == ord('s'):
             my_rover.write2motors(0 - speed, 0 - speed)
         if wasd_mode is True and user_input == ord('a'):
-            my_rover.write2motors(turning_ratio * speed, speed)
+            my_rover.write2motors(int(steering_ratio * speed), speed)
         if wasd_mode is True and user_input == ord('d'):
-            my_rover.write2motors(speed, turning_ratio * speed)
+            my_rover.write2motors(speed, int(steering_ratio * speed))
         if wasd_mode is True and user_input == ord(' '):
             my_rover.write2motors(0, 0)
         if wasd_mode is True and user_input == ord('q'):
             my_rover.write2motors(int(0 - (speed * 0.5)), int(speed * 0.5))
         if wasd_mode is True and user_input == ord('e'):
             my_rover.write2motors(int(speed * 0.5), int(0 - (speed * 0.5)))
+        if wasd_mode is True and user_input == ord('x'):
+            if speed < 99:
+                speed += 1
+            console.appendleft('Speed: {}'.format(speed))
+        if wasd_mode is True and user_input == ord('z'):
+            if speed > 1:
+                speed -= 1
+            console.appendleft('Speed: {}'.format(speed))
+        if wasd_mode is True and user_input == ord('r'):
+            if steering_ratio < 0.9:
+                steering_ratio += 0.1
+            console.appendleft('Steering Ratio: {}'.format(steering_ratio))
+        if wasd_mode is True and user_input == ord('t'):
+            if steering_ratio > 0.1:
+                steering_ratio -= 0.1
+            console.appendleft('Steering Ratio: {}'.format(steering_ratio))
 
         # CONTROL ROVER
         my_rover.read()

@@ -35,6 +35,10 @@ void parse(char msg[]) {
     sensors.readSensors();
     sensors.quickPrint();
   }
+  if (msg[0] == 'm') {
+    MOTOR.setSpeedDir1(msg[1], msg[2]);
+    MOTOR.setSpeedDir2(msg[3], msg[4]);
+  }
 }
 
 void logMessage(char msg[], int msgLength) {
@@ -72,7 +76,7 @@ void loop()
       message[n] = Serial.read();
     }
 //    logMessage(message, messageLength);
-//    parse(message);
+    parse(message);
     incoming = false;
   }
 }

@@ -64,8 +64,10 @@ class Rover(object):
         dir2 = 0x00     # #define DIRR            0x01        // Reversion
         if m1 < 0:
             dir1 = 0x01
+            motor1 = motor1*(0-1)
         if m2 < 0:
             dir2 = 0x01
+            motor2 = motor2*(0-1)
         if m1 > 100:
             motor1 = 20
         if m2 > 100:
