@@ -21,6 +21,7 @@ class Rover(object):
         self.gyro_plot = None
         self.compass_plot = None
         self.message_length = 0  # Set by Arduino upon connect
+        self.message_number = 0
 
     def plot_accel(self):
         if self.accel_plot is None:
@@ -48,7 +49,7 @@ class Rover(object):
             if 'Hello, World!' in MOTD:
                 self.connected = True
                 break
-        self.message_length = int(self.serial.readline().rstrip())
+        # self.message_length = int(self.serial.readline().rstrip())
         # self.accel['BIASX'] = float(self.serial.readline().rstrip())
         # self.accel['BIASY'] = float(self.serial.readline().rstrip())
         # self.accel['BIASZ'] = float(self.serial.readline().rstrip())
@@ -57,8 +58,13 @@ class Rover(object):
         # self.gyro['BIASZ'] = float(self.serial.readline().rstrip())
 
     def write(self, msg):
-        padding = ''.join(["|"]*(self.message_length - len("~" + msg)))
-        self.serial.write("~" + msg + padding)
+        # need to look into bytearray
+
+        # +--------+----------------+---------+------>
+        # | Header | Message Length | Data ID | Data
+        # +--------+----------------+---------+------>
+        new_message = '~er'
+        self.serial.write(new_message)
 
     def read(self):
         self.write('r')

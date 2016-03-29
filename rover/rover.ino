@@ -8,8 +8,6 @@ Software for a Hercules Platform utilising various cheap sensors:
 Rover must be on all 4 wheels on horizontal surface at start up
 */
 
-#define MESSAGE_LENGTH 7
-
 // Pixy Cam Libraries
 #include <SPI.h>
 #include <Pixy.h>
@@ -26,28 +24,15 @@ Rover must be on all 4 wheels on horizontal surface at start up
 #include "Vector3D.h"
 #include "Sensors.h"
 Sensors sensors = Sensors();
-char message[MESSAGE_LENGTH];
-bool newMessage = false;
 
-void act(char data[])
-{
-  // Check the data is formatted properly
-  if (data[0] == '~') {
-    if (data[1] == 'r') {
-      sensors.readSensors();
-      sensors.quickPrint();
-    } else if (data[1] == 'c') {
-      Serial.println("Control");
-    }
-  // If data is not formatted properly fix it for the future by locating header in serial queue
-  } else {
-    for (int i=0; i<MESSAGE_LENGTH;i++){
-      if (data[i] == '~') {
-        for (int j=i; j<MESSAGE_LENGTH;j++){
-          Serial.read(); // read junk of badly formatted message
-        }
-      }
-    }
+char message[127];
+char header = '*';
+int messageLength = 0;
+
+void parse(char msg[]){
+  if (msg[0] == 'r') {
+    sensors.readSensors();
+    sensors.quickPrint();
   }
 }
   
@@ -55,24 +40,35 @@ void setup()
 {
   Serial.begin(38400);
   delay(100);
-  Serial.println("\nHello, World!");
-  Serial.println(MESSAGE_LENGTH);
 //  MOTOR.init();
   sensors.init();
-  
+  Serial.println("\nHello, World!");
 }
 
 void loop()
 {
-  
-  if (Serial.available() >= MESSAGE_LENGTH) {
-    newMessage = true;
+  if (Serial.available() > 2) {
+    // find the start of a message if there is junk
+    if (Serial.peek() != '~') {
+      Serial.read();
+    }
+    header= Serial.read();
+    messageLength = Serial.read();
+    messageLength -= 100;
   }
-  if (newMessage) {
-    for(int n=0; n<MESSAGE_LENGTH; n++) {
+  // if a header was found and the rest of the message has arrived, read it!
+  if (header == '~' && Serial.available() >= messageLength) {
+    for(int n=0; n<messageLength; n++) {
       message[n] = Serial.read();
     }
-    act(message);
-    newMessage = false;
+    parse(message);
+//    Serial.print("Message Length: ");
+//    Serial.println(messageLength);
+//    Serial.print("Data ID: ");
+//    Serial.println(message[0]);
+    header = '*';
+    messageLength = 0;
   }
+  
+      
 }

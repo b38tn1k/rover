@@ -17,7 +17,6 @@ def main(screen):
     # CONSOLE DEQUE
     console = deque(maxlen=25)
     console.appendleft('Hello, World!')
-    console.appendleft('Waiting for Onboard Sensor Calibration')
     # CONTROL VARS
     toggle_plot = False
     plot_accel = False
@@ -107,8 +106,6 @@ def main(screen):
         # CONTROL ROVER
         my_rover.read()
         _ = my_rover.log2curses(screen)
-        if len(console) == 2:  # HACK to indicate when onboard calibration complete
-            console.appendleft("DONE")
         if plot_accel is True:
             my_rover.plot_accel()
             if not(my_rover.accel_plot.plotly_address in console):
@@ -121,6 +118,7 @@ def main(screen):
             my_rover.plot_compass()
             if not(my_rover.compass_plot.plotly_address in console):
                 console.appendleft(my_rover.compass_plot.plotly_address)
+        screen.refresh()
 
 
 curses.wrapper(main)
