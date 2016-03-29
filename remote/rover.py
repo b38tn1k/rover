@@ -57,6 +57,26 @@ class Rover(object):
         # self.gyro['BIASY'] = float(self.serial.readline().rstrip())
         # self.gyro['BIASZ'] = float(self.serial.readline().rstrip())
 
+    def write2motors(self, m1, m2):
+        motor1 = m1
+        motor2 = m2
+        dir1 = 0x00     # #define DIRF            0x00        // Forward
+        dir2 = 0x00     # #define DIRR            0x01        // Reversion
+        if m1 < 0:
+            dir1 = 0x01
+        if m2 < 0:
+            dir2 = 0x01
+        if m1 > 100:
+            motor1 = 20
+        if m2 > 100:
+            motor2 = 20
+        msg = bytearray('m')
+        msg.append(chr(motor1))
+        msg.append(dir1)
+        msg.append(chr(motor2))
+        msg.append(dir2)
+        self.write(msg)
+
     def write(self, msg):
         # +--------+----------------+---------+------>
         # | Header | Message Length | Data ID | Data

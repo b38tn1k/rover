@@ -54,11 +54,8 @@ def main(screen):
         # READ FROM USER
         user_input = screen.getch()
         # MENU ACTIONS
-        if user_input == ord('q'):
-            if wasd_mode is False:
-                exit()
-            else:
-                console.appendleft('Exit Manual Mode to Quit')
+        if user_input == ord('q') and not wasd_mode:
+            exit()
         if user_input == ord('p'):
             toggle_plot = not(toggle_plot)
             if toggle_plot is True:
@@ -91,7 +88,7 @@ def main(screen):
                 console.appendleft('a:\t\tBackwards')
                 console.appendleft('s:\t\tRatio Turn Left')
                 console.appendleft('d:\t\tRatio Turn Right')
-                console.appendleft('q:\t\t0 Turn Left')
+                console.appendleft('q:\t\t0 Turn Left\tOVERRIDES QUIT!')
                 console.appendleft('e:\t\t0 Turn Right')
                 console.appendleft('SPACE:\t\tBrake!')
                 console.appendleft('Secondary Controls:')
@@ -103,6 +100,21 @@ def main(screen):
                 console.appendleft('Press [m] to cancel')
             else:
                 console.appendleft('Manual Mode cancelled')
+        if wasd_mode is True and user_input == ord('w'):
+            my_rover.write2motors(speed, speed)
+        if wasd_mode is True and user_input == ord('s'):
+            my_rover.write2motors(0 - speed, 0 - speed)
+        if wasd_mode is True and user_input == ord('a'):
+            my_rover.write2motors(turning_ratio * speed, speed)
+        if wasd_mode is True and user_input == ord('d'):
+            my_rover.write2motors(speed, turning_ratio * speed)
+        if wasd_mode is True and user_input == ord(' '):
+            my_rover.write2motors(0, 0)
+        if wasd_mode is True and user_input == ord('q'):
+            my_rover.write2motors(int(0 - (speed * 0.5)), int(speed * 0.5))
+        if wasd_mode is True and user_input == ord('e'):
+            my_rover.write2motors(int(speed * 0.5), int(0 - (speed * 0.5)))
+
         # CONTROL ROVER
         my_rover.read()
         _ = my_rover.log2curses(screen)

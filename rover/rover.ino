@@ -28,12 +28,12 @@ Sensors sensors = Sensors();
 char message[127];
 char header = '*';
 int messageLength = 0;
-bool incomming = false;
+bool incoming = false;
 
 void parse(char msg[]) {
   if (msg[0] == 'r') {
-//    sensors.readSensors();
-//    sensors.quickPrint();
+    sensors.readSensors();
+    sensors.quickPrint();
   }
 }
 
@@ -53,8 +53,8 @@ void logMessage(char msg[], int msgLength) {
 void setup()
 {
   Serial.begin(38400);
-  //  MOTOR.init();
-  //  sensors.init();
+  MOTOR.init();
+  sensors.init();
   Serial.println("\nHello, World!");
 }
 
@@ -64,14 +64,15 @@ void loop()
   if (Serial.available() > 2 && Serial.peek() == '~') {
     header = Serial.read();
     messageLength = Serial.read();
-    incomming = true;
+    incoming = true;
   }
   // Read the new message!
-  if (Serial.available() >= messageLength && incomming) {
+  if (Serial.available() >= messageLength && incoming) {
     for (int n = 0; n < messageLength; n++) {
       message[n] = Serial.read();
     }
-    logMessage(message, messageLength);
-    incomming = false;
+//    logMessage(message, messageLength);
+//    parse(message);
+    incoming = false;
   }
 }
