@@ -42,7 +42,7 @@ class Rover(object):
             self.gyro_plot.update(self.gyro)
 
     def connect(self):
-        self.serial = serial.Serial('/dev/tty.usbserial-AJV9OOBQ', 38400)
+        self.serial = serial.Serial(self.address, 38400)
         MOTD = ' '
         while True:
             MOTD = self.serial.readline()

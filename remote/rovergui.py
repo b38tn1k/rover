@@ -1,12 +1,13 @@
 #!/usr/bin/python
 import curses
+import sys
 from time import sleep
 from rover import Rover
 import plotly.plotly as py
 from collections import deque
 
 
-def main(screen):
+def main(screen, address):
     # INIT CURSES LAYOUT COMPONENTS
     curses.use_default_colors()
     curses.curs_set(0)
@@ -26,7 +27,7 @@ def main(screen):
     speed = 50
     steering_ratio = 0.5
     # CONNECT TO ROVER
-    my_rover = Rover('/dev/tty.usbserial-AJV9OOBQ')
+    my_rover = Rover(address)
     screen.addstr(1, 1, 'ROVER1', curses.A_STANDOUT)
     screen.addstr(1, 7, ' connecting to ' + my_rover.address, curses.A_DIM)
     screen.addstr(3, 1, 'DO NOT ADJUST YOUR TERMINAL', curses.A_BLINK)
@@ -147,5 +148,5 @@ def main(screen):
                 console.appendleft(my_rover.compass_plot.plotly_address)
         screen.refresh()
 
-
-curses.wrapper(main)
+address = sys.argv[1]
+curses.wrapper(main, address)
