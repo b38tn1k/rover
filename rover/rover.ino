@@ -25,7 +25,7 @@ Rover must be on all 4 wheels on horizontal surface at start up
 #include "Sensors.h"
 Sensors sensors = Sensors();
 
-char message[127];
+char message[62];
 char header = '*';
 int messageLength = 0;
 bool incoming = false;
@@ -69,6 +69,10 @@ void loop()
     header = Serial.read();
     messageLength = Serial.read();
     incoming = true;
+  }
+  // Remove and junk from the Serial buffer
+  if (Serial.available() > 0 && Serial.peek() != '~' && !incoming) {
+    Serial.read();
   }
   // Read the new message!
   if (Serial.available() >= messageLength && incoming) {
