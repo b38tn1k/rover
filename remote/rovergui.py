@@ -26,6 +26,7 @@ def main(screen, address):
     wasd_mode = False
     speed = 50
     steering_ratio = 0.5
+    timeout = 10
     # CONNECT TO ROVER
     my_rover = Rover(address)
     screen.addstr(1, 1, 'ROVER1', curses.A_STANDOUT)
@@ -101,19 +102,26 @@ def main(screen, address):
             else:
                 console.appendleft('Manual Mode cancelled')
         if wasd_mode is True and user_input == ord('w'):
-            my_rover.write2motors(speed, speed)
-        if wasd_mode is True and user_input == ord('s'):
             my_rover.write2motors(0 - speed, 0 - speed)
+            timeout = 10
+        if wasd_mode is True and user_input == ord('s'):
+            my_rover.write2motors(speed, speed)
+            timeout = 10
         if wasd_mode is True and user_input == ord('a'):
-            my_rover.write2motors(int(steering_ratio * speed), speed)
+            my_rover.write2motors((0 - speed), int(steering_ratio * (0 - speed)))
+            timeout = 10
         if wasd_mode is True and user_input == ord('d'):
-            my_rover.write2motors(speed, int(steering_ratio * speed))
+            my_rover.write2motors(int(steering_ratio * (0 - speed)), (0 - speed))
+            timeout = 10
         if wasd_mode is True and user_input == ord(' '):
             my_rover.write2motors(0, 0)
+            timeout = 10
         if wasd_mode is True and user_input == ord('q'):
-            my_rover.write2motors(int(0 - (speed * 0.5)), int(speed * 0.5))
+            my_rover.write2motors(int(0 - (speed)), int(speed))
+            timeout = 10
         if wasd_mode is True and user_input == ord('e'):
-            my_rover.write2motors(int(speed * 0.5), int(0 - (speed * 0.5)))
+            my_rover.write2motors(int(speed), int(0 - (speed)))
+            timeout = 10
         if wasd_mode is True and user_input == ord('x'):
             if speed < 99:
                 speed += 1
@@ -130,6 +138,9 @@ def main(screen, address):
             if steering_ratio > 0.1:
                 steering_ratio -= 0.1
             console.appendleft('Steering Ratio: {}'.format(steering_ratio))
+        if wasd_mode is True and timeout < 0:
+            my_rover.write2motors(0, 0)
+        timeout = timeout - 1
 
         # CONTROL ROVER
         my_rover.read()
