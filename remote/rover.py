@@ -90,23 +90,26 @@ class Rover(object):
         for c in s:
             self.serial.write(chr(c))
 
+    def read_serial_as_float(self):
+        return float(self.serial.readline().rstrip())
+
     def read(self):
         self.write(bytearray('r'))
         # Accelerometer
-        self.accel['X'] = float(self.serial.readline().rstrip())
-        self.accel['Y'] = float(self.serial.readline().rstrip())
-        self.accel['Z'] = float(self.serial.readline().rstrip())
+        self.accel['X'] = self.read_serial_as_float()
+        self.accel['Y'] = self.read_serial_as_float()
+        self.accel['Z'] = self.read_serial_as_float()
         # Gyro
-        self.gyro['X'] = float(self.serial.readline().rstrip())
-        self.gyro['Y'] = float(self.serial.readline().rstrip())
-        self.gyro['Z'] = float(self.serial.readline().rstrip())
+        self.gyro['X'] = self.read_serial_as_float()
+        self.gyro['Y'] = self.read_serial_as_float()
+        self.gyro['Z'] = self.read_serial_as_float()
         # Compass
-        self.compass['X'] = float(self.serial.readline().rstrip())
-        self.compass['Y'] = float(self.serial.readline().rstrip())
-        self.compass['Z'] = float(self.serial.readline().rstrip())
+        self.compass['X'] = self.read_serial_as_float()
+        self.compass['Y'] = self.read_serial_as_float()
+        self.compass['Z'] = self.read_serial_as_float()
         # IR
-        self.ir['FRONT'] = float(self.serial.readline().rstrip())
-        self.ir['REAR'] = float(self.serial.readline().rstrip())
+        self.ir['FRONT'] = self.read_serial_as_float()
+        self.ir['REAR'] = self.read_serial_as_float()
 
     def log2cli(self):
         print('Accelerometer')

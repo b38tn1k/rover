@@ -33,3 +33,4 @@ Project Resource Directories
 *.pyc
 
 *.secret
+.idea
