@@ -143,7 +143,7 @@ def main(screen, address):
         timeout = timeout - 1
 
         # CONTROL ROVER
-        my_rover.read()
+        #my_rover.read()
         _ = my_rover.log2curses(screen)
         if plot_accel is True:
             my_rover.plot_accel()
